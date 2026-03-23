@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>בחינת תיווך | הכנה לרישיון</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="תיווך Pro">
+<meta name="theme-color" content="#0f1923">
+<link rel="apple-touch-icon" id="appicon">
+<script>
+(function(){
+  const c=document.createElement('canvas');c.width=180;c.height=180;
+  const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,180,180);
+  g.addColorStop(0,'#1a2f1a');g.addColorStop(1,'#0f1923');
+  x.fillStyle=g;x.beginPath();x.roundRect(0,0,180,180,36);x.fill();
+  x.strokeStyle='#c9a84c';x.lineWidth=4;x.shadowColor='#c9a84c';x.shadowBlur=12;
+  x.beginPath();x.roundRect(8,8,164,164,28);x.stroke();x.shadowBlur=0;
+  x.font='72px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('🏠',90,78);
+  x.font='bold 14px monospace';x.fillStyle='#c9a84c';x.textBaseline='alphabetic';
+  x.fillText('תיווך Pro',90,158);
+  const l=document.getElementById('appicon');if(l)l.href=c.toDataURL('image/png');
+  if('serviceWorker' in navigator){
+    const sw=`const V='broker1';self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['./']).then(()=>self.skipWaiting())));});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>r||new Response('Offline',{status:503}))));});`;
+    navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})),{scope:'./'});
+  }
+})();
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f1923;--bg2:#162030;--card:#1c2b3a;--card2:#243444;
+  --border:#2a3f55;--border2:#3a5570;
+  --gold:#c9a84c;--gold2:#e8c870;--gold-bg:rgba(201,168,76,0.1);
+  --green:#2ecc71;--green-bg:rgba(46,204,113,0.1);
+  --red:#e74c3c;--red-bg:rgba(231,76,60,0.1);
+  --blue:#3498db;--blue-bg:rgba(52,152,219,0.1);
+  --text:#e8edf2;--muted:#7a94a8;--muted2:#5a7a8a;
+  --font:'Heebo',sans-serif;--serif:'Frank Ruhl Libre',serif;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);overflow:hidden}
+#app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:linear-gradient(135deg,#162030,#0f1923);
+  border-bottom:1px solid var(--border);
+  padding:calc(var(--safe-top) + 10px) 16px 10px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.tb-logo{font-family:var(--serif);font-size:18px;color:var(--gold);font-weight:700;flex:1;text-align:center}
+.tb-score{background:var(--gold-bg);border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.tb-menu{background:none;border:none;color:var(--gold);font-size:22px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+
+/* ── PROGRESS STRIP ── */
+.progress-strip{background:var(--card);border-bottom:1px solid var(--border);padding:10px 16px;flex-shrink:0}
+.ps-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ps-label{font-size:12px;color:var(--muted);font-weight:600}
+.ps-nums{font-size:12px;color:var(--gold);font-weight:700}
+.ps-track{background:var(--border);border-radius:99px;height:5px;overflow:hidden}
+.ps-fill{background:linear-gradient(90deg,var(--gold),var(--gold2));height:5px;border-radius:99px;transition:width .5s ease}
+.stats-row{display:flex;gap:8px;margin-top:8px}
+.stat-chip{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:5px 8px;text-align:center}
+.sc-val{font-size:13px;font-weight:700;color:var(--gold);display:block}
+.sc-lbl{font-size:9px;color:var(--muted);margin-top:1px;display:block}
+
+/* ── SCROLL ── */
+#scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#scroll::-webkit-scrollbar{display:none}
+
+/* ── HOME SCREEN ── */
+.home-view{padding:20px 16px calc(80px + var(--safe-bot))}
+.home-hero{background:linear-gradient(135deg,#1c3a2a,#162030);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:24px 20px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden}
+.home-hero::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,0.15),transparent 70%);pointer-events:none}
+.hh-icon{font-size:52px;margin-bottom:10px}
+.hh-title{font-family:var(--serif);font-size:22px;color:var(--gold);font-weight:900;margin-bottom:6px}
+.hh-sub{font-size:13px;color:var(--muted);line-height:1.6}
+.topics-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.topic-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;min-height:70px}
+.topic-card:active{transform:scale(.97);border-color:var(--gold)}
+.topic-card.locked{opacity:.5;cursor:not-allowed}
+.topic-card.completed{border-color:rgba(46,204,113,0.4);background:rgba(46,204,113,0.05)}
+.tc-icon{font-size:28px;width:48px;height:48px;background:var(--card2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topic-card.completed .tc-icon{background:rgba(46,204,113,0.15)}
+.tc-info{flex:1}
+.tc-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+.tc-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.tc-prog{font-size:11px;color:var(--gold);margin-top:4px;font-weight:600}
+.tc-status{font-size:20px;flex-shrink:0}
+.start-btn{width:100%;background:linear-gradient(135deg,var(--gold),#a07830);color:#0f1923;border:none;padding:15px;border-radius:14px;font-family:var(--font);font-size:16px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(201,168,76,0.3);letter-spacing:.5px}
+.start-btn:active{transform:scale(.97)}
+
+/* ── QUESTION SCREEN ── */
+.q-view{padding:16px 16px calc(80px + var(--safe-bot))}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.q-back{background:var(--card);border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0}
+.q-topic-badge{flex:1;background:var(--gold-bg);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--gold);font-weight:700;text-align:center}
+.q-num{font-size:12px;color:var(--muted);font-weight:600;flex-shrink:0}
+.q-progress{background:var(--border);border-radius:99px;height:4px;margin-bottom:16px;overflow:hidden}
+.q-prog-fill{background:linear-gradient(90deg,var(--gold),var(--gold2));height:4px;border-radius:99px;transition:width .4s ease}
+/* HP lives */
+.q-lives{display:flex;gap:5px;margin-bottom:14px}
+.life{font-size:18px;transition:all .3s}
+
+/* Question card */
+.q-card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:18px 16px;margin-bottom:16px}
+.q-label{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.q-text{font-size:16px;font-weight:600;line-height:1.7;color:var(--text);font-family:var(--serif)}
+
+/* Answer options */
+.answers{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.ans-btn{
+  background:var(--card);border:1px solid var(--border2);border-radius:12px;
+  padding:14px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;
+  transition:all .15s;text-align:right;min-height:52px;
+  -webkit-tap-highlight-color:transparent;
+}
+.ans-btn:active:not(:disabled){transform:scale(.98)}
+.ans-letter{width:30px;height:30px;border-radius:8px;background:var(--card2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0;transition:all .2s}
+.ans-text{font-size:14px;line-height:1.6;color:var(--text);flex:1;padding-top:4px}
+.ans-btn.selected-correct{border-color:var(--green);background:var(--green-bg)}
+.ans-btn.selected-correct .ans-letter{background:var(--green);color:#fff}
+.ans-btn.selected-wrong{border-color:var(--red);background:var(--red-bg)}
+.ans-btn.selected-wrong .ans-letter{background:var(--red);color:#fff}
+.ans-btn.show-correct{border-color:var(--green);background:var(--green-bg)}
+.ans-btn.show-correct .ans-letter{background:var(--green);color:#fff}
+
+/* Explanation */
+.explanation{background:var(--card2);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:14px;display:none}
+.explanation.show{display:block}
+.exp-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.exp-icon{font-size:20px}
+.exp-title{font-size:13px;font-weight:700;color:var(--gold)}
+.exp-text{font-size:13px;line-height:1.75;color:#b8cdd8}
+.exp-law{background:var(--gold-bg);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--gold);line-height:1.6}
+.exp-law strong{color:var(--gold2)}
+.more-btn{background:var(--blue-bg);border:1px solid rgba(52,152,219,0.3);color:var(--blue);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;width:100%;display:none}
+.more-btn.show{display:block}
+.more-detail{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px;font-size:12px;color:var(--muted);line-height:1.7;display:none}
+.more-detail.show{display:block}
+
+/* Next button */
+.next-btn{width:100%;background:linear-gradient(135deg,var(--gold),#a07830);color:#0f1923;border:none;padding:14px;border-radius:12px;font-family:var(--font);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;display:none;box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+.next-btn.show{display:block}
+.next-btn:active{transform:scale(.97)}
+
+/* Result screen */
+.result-view{padding:20px 16px calc(80px + var(--safe-bot));text-align:center}
+.result-card{background:linear-gradient(135deg,#1c3a2a,#162030);border:2px solid var(--gold);border-radius:20px;padding:32px 20px;margin-bottom:20px}
+.result-icon{font-size:64px;margin-bottom:12px}
+.result-grade{font-family:var(--serif);font-size:48px;font-weight:900;color:var(--gold);text-shadow:0 0 30px rgba(201,168,76,0.5);margin-bottom:6px}
+.result-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px}
+.result-sub{font-size:14px;color:var(--muted);line-height:1.6}
+.result-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:20px 0}
+.rs{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px}
+.rs-v{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.rs-l{font-size:11px;color:var(--muted)}
+.result-actions{display:flex;flex-direction:column;gap:10px}
+.ra-btn{border:none;padding:14px;border-radius:12px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+.ra-btn.primary{background:linear-gradient(135deg,var(--gold),#a07830);color:#0f1923}
+.ra-btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.ra-btn:active{transform:scale(.97)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(15,25,35,0.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:stretch;
+  padding-bottom:max(8px,var(--safe-bot));
+}
+.bn{flex:1;background:none;border:none;cursor:pointer;padding:10px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);transition:color .15s;min-height:54px}
+.bn.active{color:var(--gold)}
+.bn:active{opacity:.7}
+.bn-icon{font-size:20px;line-height:1}
+.bn-label{font-size:9px;font-weight:700;letter-spacing:.3px}
+
+/* ── STATS SCREEN ── */
+.stats-view{padding:16px 16px calc(80px + var(--safe-bot))}
+.sv-title{font-family:var(--serif);font-size:20px;color:var(--gold);margin-bottom:4px;font-weight:900}
+.sv-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.big-stat{background:linear-gradient(135deg,#1c3a2a,#162030);border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px}
+.bs-num{font-family:var(--serif);font-size:52px;font-weight:900;color:var(--gold);line-height:1}
+.bs-label{font-size:13px;color:var(--muted);margin-top:6px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sg{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.sg-v{font-size:24px;font-weight:800;color:var(--gold);display:block;margin-bottom:4px}
+.sg-l{font-size:11px;color:var(--muted)}
+.topic-progress{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.tp-header{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--gold)}
+.tp-item{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.tp-item:last-child{border-bottom:none}
+.tp-icon{font-size:18px;flex-shrink:0}
+.tp-name{flex:1;font-size:13px;color:var(--text)}
+.tp-score{font-size:12px;font-weight:700;color:var(--gold)}
+.reset-btn-full{width:100%;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);color:var(--red);padding:12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:calc(var(--safe-top) + 60px);left:50%;transform:translateX(-50%) translateY(-20px);opacity:0;z-index:3000;background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;color:var(--gold);transition:all .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 10px 40px rgba(0,0,0,.5);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* ── PARTICLES ── */
+.particle{position:fixed;pointer-events:none;z-index:3000;border-radius:50%;animation:pf .8s forwards}
+@keyframes pf{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
+
+/* Correct/Wrong flash */
+@keyframes flashGreen{0%,100%{background:var(--card)}50%{background:rgba(46,204,113,0.2)}}
+@keyframes flashRed{0%,100%{background:var(--card)}50%{background:rgba(231,76,60,0.2)}}
+.flash-green{animation:flashGreen .4s ease}
+.flash-red{animation:flashRed .4s ease}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div id="app">
+  <div class="topbar">
+    <button class="tb-menu" onclick="showScreen('stats')">📊</button>
+    <div class="tb-logo">🏠 תיווך Pro</div>
+    <div class="tb-score" id="tb-score">0 נק'</div>
+  </div>
+  <div class="progress-strip" id="progress-strip">
+    <div class="ps-row"><span class="ps-label">התקדמות כוללת</span><span class="ps-nums" id="ps-nums">0 / 0</span></div>
+    <div class="ps-track"><div class="ps-fill" id="ps-fill" style="width:0%"></div></div>
+    <div class="stats-row">
+      <div class="stat-chip"><span class="sc-val" id="sc-correct">0</span><span class="sc-lbl">✅ נכון</span></div>
+      <div class="stat-chip"><span class="sc-val" id="sc-wrong">0</span><span class="sc-lbl">❌ שגוי</span></div>
+      <div class="stat-chip"><span class="sc-val" id="sc-streak">0🔥</span><span class="sc-lbl">רצף</span></div>
+    </div>
+  </div>
+  <div id="scroll">
+    <div id="screen-home"></div>
+    <div id="screen-quiz" style="display:none"></div>
+    <div id="screen-result" style="display:none"></div>
+    <div id="screen-stats" style="display:none"></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="bn active" id="bn-home" onclick="showScreen('home')"><span class="bn-icon">🏠</span><span class="bn-label">ראשי</span></button>
+    <button class="bn" id="bn-quiz" onclick="startQuiz('all','אקראי מלא',30)"><span class="bn-icon">📝</span><span class="bn-label">מבחן</span></button>
+    <button class="bn" id="bn-stats" onclick="showScreen('stats')"><span class="bn-icon">📊</span><span class="bn-label">סטטיסטיקה</span></button>
+  </nav>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   QUESTION BANK — מאגר שאלות
+══════════════════════════════════════════ */
+const TOPICS=[
+  {id:'law',name:'חוק המתווכים',icon:'⚖️',desc:'חוק 1996, תיקון 7, תקנות האתיקה 2024',color:'#c9a84c'},
+  {id:'ethics',name:'אתיקה מקצועית',icon:'🤝',desc:'חובות המתווך, גילוי נאות, ניגוד עניינים',color:'#3498db'},
+  {id:'enforcement',name:'פיקוח ואכיפה',icon:'🔍',desc:'תלונות, ועדת משמעת, סנקציות',color:'#e74c3c'},
+  {id:'practice',name:'מקרים מעשיים',icon:'💼',desc:'שאלות מציאותיות מהשטח',color:'#2ecc71'},
+];
+
+const QUESTIONS=[
+  // ── חוק המתווכים ──
+  {id:1,topic:'law',
+   q:'באיזו שנה חוקק חוק המתווכים במקרקעין?',
+   opts:['1990','1994','1996','2000'],ans:2,
+   exp:'חוק המתווכים חוקק בשנת 1996 ומסדיר את פעילות המתווכים במקרקעין בישראל.',
+   law:'סעיף 1 לחוק המתווכים במקרקעין, תשנ"ו-1996',
+   detail:'החוק הגדיר לראשונה את מקצוע התיווך, קבע דרישות רישוי וחובות מקצועיות, ואסר על עיסוק בתיווך ללא רישיון תחת איום של ענישה פלילית.'},
+
+  {id:2,topic:'law',
+   q:'מהי ההגדרה של "תיווך במקרקעין" לפי חוק המתווכים?',
+   opts:['מכירת נכסי מקרקעין בשם הבעלים','הפגשה בתמורה בין שני צדדים לשם התקשרות בעסקה','ייעוץ משפטי בעסקאות נדל"ן','ניהול נכסי נדל"ן עבור בעליהם'],ans:1,
+   exp:'החוק מגדיר תיווך כ"הפגשה בתמורה בין שני צדדים או יותר, לשם התקשרותם בעסקה בזכות במקרקעין".',
+   law:'סעיף 1 לחוק המתווכים, תשנ"ו-1996',
+   detail:'ההגדרה מדגישה שלושה יסודות: הפגשה בין צדדים, קבלת תמורה (עמלה), ומטרת ההתקשרות בעסקה במקרקעין. העדר אחד מהם עשוי להוציא את הפעולה מגדר תיווך.'},
+
+  {id:3,topic:'law',
+   q:'מתי נכנס לתוקפו תיקון מס\' 7 לחוק המתווכים?',
+   opts:['2008','2010','2012','2015'],ans:2,
+   exp:'תיקון מס\' 7 לחוק המתווכים נכנס לתוקפו בשנת 2012, ובמסגרתו הוסף סעיף 14כט המסמיך את השר לקבוע כללי אתיקה מקצועית.',
+   law:'סעיף 14כט לחוק המתווכים — הוסף בתיקון 7, 2012',
+   detail:'הסעיף מאפשר לשר, בהתייעצות עם הרשם והוועדה המייעצת ובאישור ועדת הפנים של הכנסת, לקבוע כללי אתיקה מקצועית למתווכים.'},
+
+  {id:4,topic:'law',
+   q:'מתי נחתמו תקנות המתווכים (אתיקה מקצועית), התשפ"ד-2024?',
+   opts:['29.7.24','4.9.24','1.1.24','31.12.24'],ans:1,
+   exp:'ביום 4.9.24 חתם השר דוד אמסלם על תקנות האתיקה, לאחר שאושרו ב-29.7.24 בוועדת הפנים של הכנסת.',
+   law:'תקנות המתווכים במקרקעין (אתיקה מקצועית), התשפ"ד-2024',
+   detail:'התקנות נכנסו לתוקף שישה חודשים מיום פרסומן ברשומות. זהו צעד משמעותי בהסדרת מקצוע התיווך בישראל.'},
+
+  {id:5,topic:'law',
+   q:'האם מתווך רשאי לעסוק בתיווך ללא רישיון?',
+   opts:['כן, אם יש לו ניסיון של 5 שנים','כן, לתקופת ניסיון של שנה','לא — זו עבירה פלילית','כן, בתנאי שיש לו ביטוח מקצועי'],ans:2,
+   exp:'החוק קובע איסור מוחלט לעסוק בתיווך ללא רישיון, ולצדו ענישה פלילית.',
+   law:'חוק המתווכים, תשנ"ו-1996 — הוראות הרישוי',
+   detail:'הרישיון מחייב עמידה בדרישות השכלה, מעבר בחינה ותשלום אגרה. הפרת חובת הרישוי חשופה הן לתביעה פלילית והן לתביעה אזרחית.'},
+
+  // ── אתיקה מקצועית ──
+  {id:6,topic:'ethics',
+   q:'מתווך שיש לו עניין אישי בעסקה — מה עליו לעשות?',
+   opts:['להימנע מהעסקה לחלוטין','לגלות ללקוח ולקבל הסכמה בכתב','לגלות ללקוח בעל פה בלבד','אין כל חובה — רק להיות הוגן'],ans:1,
+   exp:'סעיף 10 קובע: מתווך לא יתווך בעסקה שיש לו בה עניין אישי, אלא אם גילה זאת ללקוח וקיבל הסכמתו בכתב.',
+   law:'סעיף 10 לחוק המתווכים — גילוי עניין אישי',
+   detail:'עניין אישי כולל גם עניין של קרוב משפחה של המתווך. ההסכמה חייבת להיות בכתב — הסכמה בעל פה אינה מספיקה.'},
+
+  {id:7,topic:'ethics',
+   q:'האם מתווך רשאי לערוך חוזה מכר עבור הלקוח?',
+   opts:['כן, אם לא קיים עורך דין','כן, לחוזים פשוטים בלבד','לא — זו פעולה משפטית אסורה','כן, בתנאי שהלקוח מסכים'],ans:2,
+   exp:'סעיף 12 לחוק אוסר על מתווך לערוך או לסייע בעריכת מסמכים משפטיים הקשורים לעסקה, כולל חוזי מכר ושכירות.',
+   law:'סעיף 12 לחוק המתווכים — איסור פעולות משפטיות',
+   detail:'כמו כן, המתווך אינו רשאי לייצג לקוח במשא ומתן משפטי. תקנות האתיקה 2024 מבהירות שאיסור זה חל גם על הצעות להסכם וזיכרון דברים.'},
+
+  {id:8,topic:'ethics',
+   q:'מתווך פרסם נכס למכירה. הנכס נמכר. מה חייב לעשות?',
+   opts:['לא צריך לעשות כלום — הפרסום יפוג לבד','לעדכן את הפרסום או להסירו בהקדם האפשרי','לעדכן רק אם הנכס פורסם באתרים גדולים','להמתין שבוע לפני הסרה'],ans:1,
+   exp:'תקנות האתיקה מחייבות את המתווך לעדכן מיד כאשר נכס שפרסם אינו עוד מיועד למכירה או להשכרה.',
+   law:'תקנות האתיקה 2024 — חובות פרסום',
+   detail:'פרסום נכס שאינו בנמכר מהווה מצג שווא ועלול להוביל לאחריות משפטית. זהו חלק מחובת ההגינות הכוללת של המתווך.'},
+
+  {id:9,topic:'ethics',
+   q:'לקוח ביקש ממתווך לראות את רישיון התיווך שלו. מה חייב המתווך לעשות?',
+   opts:['רשאי לסרב — הרישיון מידע פרטי','להציג רישיון בתוקף על פי דרישה','להציג תוך 48 שעות','מספיק לציין את מספר הרישיון'],ans:1,
+   exp:'תקנות האתיקה מחייבות מתווך להציג ללקוח רישיון תיווך בתוקף על פי דרישה, כבר בפגישה הראשונה.',
+   law:'תקנות המתווכים (אתיקה מקצועית), תשפ"ד-2024',
+   detail:'הצגת הרישיון מגנה על הלקוח ומאפשרת לו לוודא שהמתווך מוסמך כחוק. הלקוח צדק בדרישתו.'},
+
+  {id:10,topic:'ethics',
+   q:'מתווך מייצג גם קונה וגם מוכר באותה עסקה. מה חייב לעשות?',
+   opts:['לוותר על העמלה מאחד הצדדים','לקבל הסכמה בכתב מכל הצדדים ולתעד את ההצעות','להודיע לרשם המתווכים','מותר — אין הגבלה על ייצוג כפול'],ans:1,
+   exp:'כאשר מתווך מייצג יותר מצד אחד, חלות חובות מוגברות: קבלת הסכמה בכתב מכל הלקוחות ותיעוד בכתב של ההצעות.',
+   law:'תקנות האתיקה 2024 — ייצוג כפול',
+   detail:'השקיפות מול כל הצדדים היא מפתח. המתווך חייב לגלות לכל צד שהוא מייצג גם את הצד השני, ולקבל הסכמה מפורשת.'},
+
+  {id:11,topic:'ethics',
+   q:'האם מתווך רשאי לגבות "דמי קדימה" מלקוח?',
+   opts:['כן, עד 1,000 ש"ח','כן, בתנאי שזה מפורט בחוזה','לא — אסור לגבות כספים שאינם דמי תיווך','כן, כחלק מהסכם הבלעדיות'],ans:2,
+   exp:'תקנות האתיקה אוסרות על גביית כספים שאינם דמי תיווך, כולל דמי קדימה, דמי רצינות, ותשלום עבור חידוש חוזה.',
+   law:'תקנות האתיקה 2024 — איסור גביית תשלומים נוספים',
+   detail:'המטרה היא להגן על הצרכן מפני נהגים לא הוגנים. המתווך יכול לגבות רק את דמי התיווך המוסכמים בהסכם.'},
+
+  {id:12,topic:'ethics',
+   q:'האם מתווך רשאי להתנות שירותי תיווך ברכישת שירותים נוספים?',
+   opts:['כן, אם הלקוח מסכים','כן, אם השירות קשור לעסקה','לא — אסור על פי התקנות','כן, אם ניתנת הנחה בדמי התיווך'],ans:2,
+   exp:'תקנה 12 אוסרת על מתווך להתנות מתן שירותי תיווך ברכישת שירותים אחרים ממנו או מאדם אחר.',
+   law:'תקנה 12 לתקנות האתיקה 2024',
+   detail:'דוגמה מהשטח: מתווך שמחייב לקוח לשכור את אשתו כעו"ד כתנאי לשירותי התיווך — זה אסור לחלוטין.'},
+
+  {id:13,topic:'ethics',
+   q:'מתווך מוסר ללקוח מידע תכנוני על הנכס (כגון תמ"א). מה חייב לעשות?',
+   opts:['להעביר את המידע בלבד','לציין את המקור הרשמי עליו הסתמך','לקבל אישור שמאי לפני מסירה','לא רשאי למסור מידע תכנוני'],ans:1,
+   exp:'מתווך שבוחר למסור מידע תכנוני חייב לציין את הפרסום הרשמי עליו הסתמך — למשל תכנית מופקדת או היתר בנייה.',
+   law:'תקנות האתיקה 2024 — מסירת מידע תכנוני',
+   detail:'ציון המקור מאפשר ללקוח לאמת את המידע בעצמו ומגן על המתווך מאחריות במקרה של שינוי.'},
+
+  {id:14,topic:'ethics',
+   q:'מתווך שהוסמך כעורך דין — האם יכול לטפל משפטית ולתווך באותו נכס?',
+   opts:['כן, זו יתרון מקצועי','לא — אם עברו פחות מ-3 שנים מהטיפול המשפטי','לא לעולם','כן, בתנאי שהלקוח מסכים'],ans:1,
+   exp:'מתווך שהוסמך כעו"ד לא יכול לתווך בנכס שטיפל בו משפטית, אלא אם עברו לפחות 3 שנים.',
+   law:'תקנות האתיקה 2024 — הפרדת תפקידים',
+   detail:'אותו כלל חל על שמאי מקרקעין: אם ערך שומה לנכס, לא יוכל לתווך בו במשך 3 שנים.'},
+
+  {id:15,topic:'ethics',
+   q:'מהו המידע המהותי שמתווך חייב למסור ללקוח?',
+   opts:['רק מחיר הנכס וגודלו','בעלי הזכויות, שטח הנכס ממקור רשמי, מידע שנגלה בביקור','כל מידע שידוע לו על השכונה','פרטי המוכר ואיש הקשר שלו'],ans:1,
+   exp:'על פי תקנות האתיקה, המידע המהותי כולל: בעלי הזכויות ורישום הנכס, שטח הנכס ממקור רשמי, מידע מהותי שנגלה בביקור.',
+   law:'תוספת ראשונה לתקנות האתיקה 2024',
+   detail:'כמו כן, אם הדירה להשכרה אינה ראויה למגורים לפי חוק שכירות הוגנת — חובה לגלות זאת. המידע חייב להיות מדויק ומבוסס על מקורות רשמיים.'},
+
+  {id:16,topic:'ethics',
+   q:'לקוח ביקש להפסיק פעולות שיווק של נכסו. מה על המתווך לעשות?',
+   opts:['להפסיק תוך שבוע','להפסיק מיד, אלא אם יש הסכם בלעדיות להמשך','להפסיק רק לאחר קבלת הודעה בכתב','להמשיך עד לתום תקופת ההסכם'],ans:1,
+   exp:'על המתווך להפסיק מיד את פעולות השיווק, למעט אם קיימת הסכמה מפורשת להמשך במסגרת הסכם בלעדיות.',
+   law:'תקנות האתיקה 2024 — ציות להוראות הלקוח',
+   detail:'המתווך חייב תמיד לפעול לפי הנחיות הלקוח בנוגע לנכסו. הסכם בלעדיות הוא החריג היחיד שעשוי לאפשר המשך פעילות.'},
+
+  {id:17,topic:'ethics',
+   q:'מתווך החתים לקוח שאינו דובר עברית על הסכם כולל בלעדיות. מה הדין?',
+   opts:['תקין — הלקוח חייב לדעת מה הוא חותם','לא תקין — חייב להסביר בשפה מובנת או להחתים בשפת הלקוח','תקין אם יש עד לחתימה','לא תקין — אסור לגבות בלעדיות'],ans:1,
+   exp:'על המתווך להסביר ללקוח בשפה מובנת וברורה את כל פרטי ההזמנה, כולל תנאי הבלעדיות — או להחתים על מסמך בשפת הלקוח.',
+   law:'תקנות האתיקה 2024 — הסברת תנאי העסקה',
+   detail:'חובת ההסבר בשפה מובנת נועדה להגן על לקוחות מהתחייבויות שלא הבינו את משמעותן. זו חלק מחובת ההגינות הכוללת.'},
+
+  {id:18,topic:'ethics',
+   q:'מה אסור למתווך לעשות עם פרטי לקוח שפנה לנכס ספציפי?',
+   opts:['לשתף אותם עם מתווכים אחרים','להשתמש בהם להצעת נכסים אחרים ללא הסכמה','לאחסן אותם יותר משנה','לכל אלה'],ans:1,
+   exp:'נאסר על מתווך להשתמש בפרטי לקוח שהתעניין בנכס כדי להציע לו נכסים אחרים — אלא אם הודיע לו מראש וקיבל הסכמה.',
+   law:'תקנות האתיקה 2024 — הגנת פרטיות לקוחות',
+   detail:'בכל עת רשאי הלקוח לסרב לשימוש בפרטיו, גם אם הסכים בעבר. ההסכמה ניתנת לביטול.'},
+
+  // ── פיקוח ואכיפה ──
+  {id:19,topic:'enforcement',
+   q:'למי מוגשת תלונה נגד מתווך שהפר חובותיו?',
+   opts:['לבית המשפט השלום','לרשם המתווכים','למשרד הפנים','לעירייה'],ans:1,
+   exp:'תלונה נגד מתווך מוגשת לרשם המתווכים, אשר מעבירה לתובע מוסמך בלשכה המשפטית של משרד המשפטים.',
+   law:'חוק המתווכים — מנגנון האכיפה',
+   detail:'התובע בוחן האם יש מקום לקובלנה משמעתית. אם כן, היא מוגשת לוועדת המשמעת של רשם המתווכים.'},
+
+  {id:20,topic:'enforcement',
+   q:'אילו סנקציות יכולה ועדת המשמעת להטיל על מתווך?',
+   opts:['קנס כספי בלבד','מאסר בלבד','קנס כספי, הקפאת רישיון ועוד','אזהרה בכתב בלבד'],ans:2,
+   exp:'ועדת המשמעת מוסמכת להטיל: קנס כספי, הקפאת רישיון, עונשים נוספים, ולחייב תשלום הוצאות ניהול ההליך.',
+   law:'חוק המתווכים — סנקציות משמעתיות',
+   detail:'הסנקציות נועדו להוות גורם הרתעה ולהבטיח כי מתווכים ינהגו באופן מקצועי ואחראי.'},
+
+  {id:21,topic:'enforcement',
+   q:'אילו מעשים מהווים עילה להגשת תלונה נגד מתווך?',
+   opts:['הפרת חובת סודיות בלבד','כל הפרה של חובות החוק — גילוי נאות, הגינות, מיומנות ועוד','גביית עמלה גבוהה מדי בלבד','אי-מציאת נכס מתאים'],ans:1,
+   exp:'עילות התלונה כוללות: הפרת סודיות, אי-גילוי עניין אישי, רשלנות חמורה, חוסר הגינות, הסתרת מידע מהותי ופעולות משפטיות אסורות.',
+   law:'חוק המתווכים — עילות לתלונה',
+   detail:'גובה העמלה כשלעצמה אינה עילה לתלונה — זה עניין חוזי. אך התנהגות לא הוגנת סביב העמלה (כגון דמי קדימה) כן מהווה עילה.'},
+
+  {id:22,topic:'enforcement',
+   q:'כמה זמן חייב מתווך לשמור מסמכי עסקת תיווך?',
+   opts:['שנה אחת','שלוש שנים','שבע שנים לפחות','עשר שנים'],ans:2,
+   exp:'על המתווך חלה חובה לשמור עותקים של כל מסמכי עסקת התיווך למשך שבע שנים לפחות מיום חתימתם.',
+   law:'תקנות האתיקה 2024 — שמירת מסמכים',
+   detail:'כמו כן, על המתווך לתת ללקוח עותק מכל מסמך עליו חתם. דרישה לעותק לאחר 6 חודשים היא לגיטימית לחלוטין.'},
+
+  {id:23,topic:'enforcement',
+   q:'מתווך הפסיק לתווך לפני 2 שנים — האם הצרכן עדיין יכול להגיש תלונה?',
+   opts:['לא — אפשר רק נגד מתווך פעיל','כן — חוק ההתיישנות חל ולא סטטוס הרישיון','לא — צריך רישיון פעיל לאכיפה','כן, אך רק לבית המשפט'],ans:1,
+   exp:'ניתן להגיש תלונה גם לאחר שהמתווך חדל מפעילות — חוקי ההתיישנות הכלליים חלים, לא סטטוס הרישיון.',
+   law:'חוק המתווכים — אכיפה',
+   detail:'חשוב לפנות בהקדם האפשרי לאחר גילוי הפרה, כדי לא להיתקל בבעיות התיישנות.'},
+
+  // ── מקרים מעשיים ──
+  {id:24,topic:'practice',
+   q:'מתווך הציע לי דירה בטענה שעוברת תמ"א. הוא חייב להוכיח?',
+   opts:['לא — מספיק שזה ידוע בשכונה','כן — חייב לציין מקור רשמי (תכנית מופקדת, היתר וכו\')','לא — זו הערכה עתידית','כן — חייב לצרף חוות שמאי'],ans:1,
+   exp:'מתווך שמוסר מידע תכנוני חייב לציין את הפרסום הרשמי עליו הסתמך — תכניות מופקדות, בקשות להיתר, הכרזות ממשלתיות.',
+   law:'תקנות האתיקה 2024 — מידע תכנוני',
+   detail:'ניתן לאתר את המידע בגאוגרפיה עירונית, אתר מנהל התכנון, ומסד הנתונים של הרשות להתחדשות עירונית.'},
+
+  {id:25,topic:'practice',
+   q:'מתווך ממשיך לפנות אליי לנכסים אחרים אחרי שחיפשתי נכס עסקי. מה הדין?',
+   opts:['מותר — פנה אליו בעצמך','אסור ללא הסכמה מפורשת — יכול לסרב בכל עת','מותר עד שנה מהעסקה','מותר אם הוא שלח הודעת ביטול'],ans:1,
+   exp:'השימוש בפרטי לקוח להצעת נכסים אחרים אסור ללא הודעה מוקדמת והסכמה. הלקוח יכול לסרב בכל עת.',
+   law:'תקנות האתיקה 2024 — הגנת פרטיות',
+   detail:'המתווך חייב לציין מראש שישתמש בפרטים לצורך הצעות עתידיות, ולאפשר סירוב מיידי. הסירוב תקף לצמיתות.'},
+
+  {id:26,topic:'practice',
+   q:'חתמתי על עסקת תיווך וגיליתי שהמתווך ייצג גם את המוכר. מה הדין?',
+   opts:['תקין — מותר לייצג שני צדדים','לא תקין — חייב היה לגלות ולקבל הסכמה בכתב מראש','תקין רק אם הלקוחות מכירים זה את זה','לא תקין — אסור לעולם לייצג שני צדדים'],ans:1,
+   exp:'ייצוג כפול מחייב גילוי מוקדם ובכתב לכל הצדדים וקבלת הסכמתם. אי-גילוי מהווה הפרת אמון חמורה.',
+   law:'תקנות האתיקה 2024 — ייצוג כפול',
+   detail:'המתווך חייב לתעד בכתב את כל ההצעות שהועברו בעסקת ייצוג כפול. אפשר להגיש תלונה לרשם.'},
+
+  {id:27,topic:'practice',
+   q:'מתווך מבקש לפרסם נכסו של לקוח פרטי. מה חייב לקבל?',
+   opts:['אישור בעל פה בלבד','הסכמה בכתב או בכל דרך מתועדת אחרת','אין צורך באישור — זה לטובת הלקוח','אישור בכתב בלבד, ללא חריגים'],ans:1,
+   exp:'לנכס שהוא דירת מגורים או נכס של יחיד, על המתווך לקבל הסכמה בכתב או בכל דרך מתועדת אחרת.',
+   law:'תקנות האתיקה 2024 — פרסום נכסים',
+   detail:'תיעוד ההסכמה מגן על שני הצדדים — על המתווך מפני תביעות על פרסום לא מורשה, ועל הלקוח מפני פרסום שלא ידע עליו.'},
+
+  {id:28,topic:'practice',
+   q:'נכס נמכר על ידי כונס נכסים. מה על המתווך לגלות ללקוח?',
+   opts:['כלום — זה עניין של בית המשפט','לגלות זאת לפני שהלקוח מתחייב כלפי המתווך','לגלות רק אם הלקוח שואל','לגלות רק לאחר חתימת הסכם התיווך'],ans:1,
+   exp:'כאשר המכירה היא באמצעות כונס נכסים או בית משפט, חובה על המתווך לגלות זאת ללקוח לפני שהלקוח מתחייב.',
+   law:'תקנות האתיקה 2024 — גילוי נסיבות עסקה',
+   detail:'מכירה בכינוס נכסים כרוכה בנהלים שונים ותנאים מיוחדים. הלקוח זכאי לדעת זאת כדי לקבל החלטה מושכלת.'},
+
+  {id:29,topic:'practice',
+   q:'לאחר כניסת התקנות לתוקף, פניתי למתווך לקבל עותק חוזה מלפני 3 שנים. הוא מסרב. מה הדין?',
+   opts:['צודק — חובה לשמור רק שנה','לא צודק — חייב לשמור 7 שנים ולמסור עותק','צודק — רק גוף שיפוטי יכול לדרוש','לא צודק — צריך להגיש בקשה רשמית'],ans:1,
+   exp:'על המתווך חלה חובה לשמור מסמכי עסקה 7 שנים ולמסור עותק לכל לקוח שדורש.',
+   law:'תקנות האתיקה 2024 — שמירת מסמכים',
+   detail:'אי-מסירת עותק מהווה הפרה של תקנות האתיקה ועילה לתלונה לרשם המתווכים.'},
+
+  {id:30,topic:'practice',
+   q:'מתווך הוסיף בחוזה סעיף שמחייב להעסיק עורך דין מטעמו בעסקה. האם זה תקין?',
+   opts:['כן, אם העו"ד מוסמך','כן, אם המחיר הוגן','לא — אסור להתנות שירותי תיווך ברכישת שירותים אחרים','כן, בתנאי שיש הנחה בעמלה'],ans:2,
+   exp:'תקנה 12 אוסרת על התניית שירותי תיווך ברכישת שירותים אחרים — גם אם מדובר בשירות עורך דין.',
+   law:'תקנה 12 לתקנות האתיקה 2024',
+   detail:'זוהי אחת מהפרקטיקות הנפוצות שהתקנות באו לאסור. הלקוח חופשי לבחור את עורך הדין שלו.'},
+];
+
+/* ════════════════════
+   GAME STATE
+════════════════════ */
+let G={
+  totalScore:0,totalCorrect:0,totalWrong:0,streak:0,
+  topicStats:{law:{correct:0,wrong:0},ethics:{correct:0,wrong:0},enforcement:{correct:0,wrong:0},practice:{correct:0,wrong:0}},
+  answeredIds:new Set(),
+};
+function saveG(){localStorage.setItem('broker1',JSON.stringify({...G,answeredIds:[...G.answeredIds]}));}
+function loadG(){
+  try{
+    const s=JSON.parse(localStorage.getItem('broker1')||'{}');
+    if(s.totalScore!==undefined)G.totalScore=s.totalScore;
+    if(s.totalCorrect!==undefined)G.totalCorrect=s.totalCorrect;
+    if(s.totalWrong!==undefined)G.totalWrong=s.totalWrong;
+    if(s.streak!==undefined)G.streak=s.streak;
+    if(s.topicStats)G.topicStats=s.topicStats;
+    if(s.answeredIds)G.answeredIds=new Set(s.answeredIds);
+  }catch(e){}
+}
+
+/* Current quiz state */
+let CQ={questions:[],idx:0,correct:0,wrong:0,topic:'all',topicName:'',answered:false,showMore:false};
+
+/* ════════════════════
+   HUD
+════════════════════ */
+function hud(){
+  document.getElementById('tb-score').textContent=G.totalScore+' נק\'';
+  document.getElementById('sc-correct').textContent=G.totalCorrect;
+  document.getElementById('sc-wrong').textContent=G.totalWrong;
+  document.getElementById('sc-streak').textContent=G.streak+'🔥';
+  const total=QUESTIONS.length;
+  const done=G.answeredIds.size;
+  document.getElementById('ps-nums').textContent=done+' / '+total;
+  document.getElementById('ps-fill').style.width=(done/total*100)+'%';
+}
+
+/* ════════════════════
+   SCREENS
+════════════════════ */
+function showScreen(name){
+  ['home','quiz','result','stats'].forEach(s=>{
+    document.getElementById('screen-'+s).style.display=s===name?'':'none';
+  });
+  ['home','quiz','stats'].forEach(s=>{
+    const b=document.getElementById('bn-'+s);
+    if(b)b.classList.toggle('active',s===name);
+  });
+  document.getElementById('scroll').scrollTop=0;
+  if(name==='home')renderHome();
+  if(name==='stats')renderStats();
+}
+
+/* ════════════════════
+   HOME
+════════════════════ */
+function renderHome(){
+  const el=document.getElementById('screen-home');
+  let topicsHTML=TOPICS.map(t=>{
+    const qs=QUESTIONS.filter(q=>q.topic===t.id);
+    const done=qs.filter(q=>G.answeredIds.has(q.id)).length;
+    const pct=Math.round(done/qs.length*100);
+    const completed=done===qs.length;
+    return `<div class="topic-card ${completed?'completed':''}" onclick="startQuiz('${t.id}','${t.name}',10)">
+      <div class="tc-icon">${t.icon}</div>
+      <div class="tc-info">
+        <div class="tc-name">${t.name}</div>
+        <div class="tc-desc">${t.desc}</div>
+        <div class="tc-prog">${done}/${qs.length} שאלות · ${pct}%</div>
+      </div>
+      <div class="tc-status">${completed?'✅':'▶'}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`<div class="home-view">
+    <div class="home-hero">
+      <div class="hh-icon">🏠</div>
+      <div class="hh-title">הכנה לבחינת תיווך</div>
+      <div class="hh-sub">תרגל שאלות מחוק המתווכים, תקנות האתיקה ומקרים מעשיים</div>
+    </div>
+    <div class="topics-grid">${topicsHTML}</div>
+    <button class="start-btn" onclick="startQuiz('all','מבחן מלא — כל הנושאים',30)">
+      📝 התחל מבחן מלא — 30 שאלות
+    </button>
+  </div>`;
+}
+
+/* ════════════════════
+   QUIZ
+════════════════════ */
+function startQuiz(topicId,topicName,count){
+  let pool=topicId==='all'?[...QUESTIONS]:QUESTIONS.filter(q=>q.topic===topicId);
+  // Shuffle
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  CQ={questions:pool.slice(0,Math.min(count,pool.length)),idx:0,correct:0,wrong:0,topic:topicId,topicName:topicName,answered:false,hp:3};
+  showScreen('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  CQ.answered=false;CQ.showMore=false;
+  const q=CQ.questions[CQ.idx];
+  const total=CQ.questions.length;
+  const pct=Math.round((CQ.idx/total)*100);
+  const el=document.getElementById('screen-quiz');
+
+  let livesHTML='';
+  for(let i=0;i<3;i++)livesHTML+=`<span class="life">${i<CQ.hp?'❤️':'🖤'}</span>`;
+
+  const letters=['א','ב','ג','ד'];
+  let optsHTML=q.opts.map((o,i)=>`
+    <button class="ans-btn" id="ans${i}" onclick="answer(${i})">
+      <div class="ans-letter">${letters[i]}</div>
+      <div class="ans-text">${o}</div>
+    </button>`).join('');
+
+  el.innerHTML=`<div class="q-view">
+    <div class="q-header">
+      <button class="q-back" onclick="showScreen('home')">→</button>
+      <div class="q-topic-badge">${CQ.topicName}</div>
+      <div class="q-num">${CQ.idx+1}/${total}</div>
+    </div>
+    <div class="q-progress"><div class="q-prog-fill" style="width:${pct}%"></div></div>
+    <div class="q-lives">${livesHTML}</div>
+    <div class="q-card">
+      <div class="q-label">שאלה ${CQ.idx+1}</div>
+      <div class="q-text">${q.q}</div>
+    </div>
+    <div class="answers">${optsHTML}</div>
+    <div class="explanation" id="exp">
+      <div class="exp-header"><div class="exp-icon" id="exp-icon">💡</div><div class="exp-title" id="exp-title">הסבר</div></div>
+      <div class="exp-text" id="exp-text"></div>
+      <div class="exp-law" id="exp-law"></div>
+      <button class="more-btn" id="more-btn" onclick="toggleMore()">📖 פרטים נוספים</button>
+      <div class="more-detail" id="more-detail"></div>
+    </div>
+    <button class="next-btn" id="next-btn" onclick="nextQ()">
+      ${CQ.idx<CQ.questions.length-1?'שאלה הבאה ←':'סיום המבחן 🏁'}
+    </button>
+  </div>`;
+}
+
+function answer(chosen){
+  if(CQ.answered)return;
+  CQ.answered=true;
+  const q=CQ.questions[CQ.idx];
+  const correct=q.ans;
+  const right=chosen===correct;
+
+  // Style buttons
+  for(let i=0;i<q.opts.length;i++){
+    const b=document.getElementById('ans'+i);
+    b.disabled=true;b.style.pointerEvents='none';
+    if(i===correct)b.classList.add(right&&i===chosen?'selected-correct':'show-correct');
+    if(i===chosen&&!right)b.classList.add('selected-wrong');
+  }
+
+  // Explanation
+  const exp=document.getElementById('exp');
+  const icon=document.getElementById('exp-icon');
+  const title=document.getElementById('exp-title');
+  const text=document.getElementById('exp-text');
+  const law=document.getElementById('exp-law');
+  const moreBtn=document.getElementById('more-btn');
+  const moreDetail=document.getElementById('more-detail');
+
+  exp.classList.add('show');
+  if(right){
+    icon.textContent='✅';title.textContent='תשובה נכונה!';title.style.color='var(--green)';
+    document.querySelector('.q-card').classList.add('flash-green');
+  }else{
+    icon.textContent='❌';title.textContent='תשובה שגויה';title.style.color='var(--red)';
+    document.querySelector('.q-card').classList.add('flash-red');
+  }
+  text.textContent=q.exp;
+  law.innerHTML=`<strong>📋 סמכות חוקית:</strong> ${q.law}`;
+  if(q.detail){moreDetail.textContent=q.detail;moreBtn.classList.add('show');}
+
+  document.getElementById('next-btn').classList.add('show');
+
+  // Update state
+  if(right){
+    CQ.correct++;G.totalCorrect++;G.streak++;G.totalScore+=10+(G.streak>3?5:0);
+    G.topicStats[q.topic].correct=(G.topicStats[q.topic].correct||0)+1;
+    burst('var(--gold)');
+    toast('✅ נכון! +'+( 10+(G.streak>3?5:0))+' נק\'');
+  }else{
+    CQ.wrong++;G.totalWrong++;G.streak=0;
+    G.topicStats[q.topic].wrong=(G.topicStats[q.topic].wrong||0)+1;
+    CQ.hp--;
+    toast('❌ לא נכון. קרא את ההסבר!');
+  }
+  G.answeredIds.add(q.id);
+  saveG();hud();
+}
+
+function toggleMore(){
+  CQ.showMore=!CQ.showMore;
+  document.getElementById('more-detail').classList.toggle('show',CQ.showMore);
+  document.getElementById('more-btn').textContent=CQ.showMore?'▲ הסתר פרטים':'📖 פרטים נוספים';
+}
+
+function nextQ(){
+  CQ.idx++;
+  if(CQ.idx>=CQ.questions.length){renderResult();return;}
+  renderQ();
+  document.getElementById('scroll').scrollTop=0;
+}
+
+/* ════════════════════
+   RESULT
+════════════════════ */
+function renderResult(){
+  const pct=Math.round(CQ.correct/CQ.questions.length*100);
+  let grade,icon,msg;
+  if(pct>=90){grade='מצוין!';icon='🏆';msg='כל הכבוד! אתה מוכן לבחינה!';}
+  else if(pct>=75){grade='טוב מאוד';icon='🌟';msg='ביצועים טובים מאוד. המשך לתרגל!';}
+  else if(pct>=60){grade='עובר';icon='👍';msg='עברת! כדאי לחזור על הנושאים החלשים.';}
+  else{grade='טעון שיפור';icon='📚';msg='חזור על החומר ונסה שוב — אתה יכול!';}
+
+  document.getElementById('screen-quiz').style.display='none';
+  document.getElementById('screen-result').style.display='';
+
+  document.getElementById('screen-result').innerHTML=`<div class="result-view">
+    <div class="result-card">
+      <div class="result-icon">${icon}</div>
+      <div class="result-grade">${pct}%</div>
+      <div class="result-title">${grade}</div>
+      <div class="result-sub">${msg}</div>
+      <div class="result-stats">
+        <div class="rs"><div class="rs-v">${CQ.correct}</div><div class="rs-l">✅ נכון</div></div>
+        <div class="rs"><div class="rs-v">${CQ.wrong}</div><div class="rs-l">❌ שגוי</div></div>
+        <div class="rs"><div class="rs-v">${CQ.questions.length}</div><div class="rs-l">📝 סה"כ</div></div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="ra-btn primary" onclick="startQuiz('${CQ.topic}','${CQ.topicName}',${CQ.questions.length})">🔄 שוב</button>
+      <button class="ra-btn secondary" onclick="showScreen('home')">🏠 ראשי</button>
+    </div>
+  </div>`;
+}
+
+/* ════════════════════
+   STATS
+════════════════════ */
+function renderStats(){
+  const total=G.totalCorrect+G.totalWrong;
+  const pct=total>0?Math.round(G.totalCorrect/total*100):0;
+  const el=document.getElementById('screen-stats');
+
+  let topicRows=TOPICS.map(t=>{
+    const s=G.topicStats[t.id]||{correct:0,wrong:0};
+    const tot=(s.correct||0)+(s.wrong||0);
+    const p=tot>0?Math.round((s.correct||0)/tot*100):0;
+    return `<div class="tp-item">
+      <div class="tp-icon">${t.icon}</div>
+      <div class="tp-name">${t.name}</div>
+      <div class="tp-score">${p}% (${s.correct||0}/${tot})</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`<div class="stats-view">
+    <div class="sv-title">📊 הסטטיסטיקה שלי</div>
+    <div class="sv-sub">מעקב אחר הביצועים שלך</div>
+    <div class="big-stat">
+      <div class="bs-num">${pct}%</div>
+      <div class="bs-label">ציון ממוצע כולל</div>
+    </div>
+    <div class="stats-grid">
+      <div class="sg"><span class="sg-v">${G.totalCorrect}</span><span class="sg-l">✅ תשובות נכונות</span></div>
+      <div class="sg"><span class="sg-v">${G.totalWrong}</span><span class="sg-l">❌ תשובות שגויות</span></div>
+      <div class="sg"><span class="sg-v">${G.totalScore}</span><span class="sg-l">🏆 נקודות</span></div>
+      <div class="sg"><span class="sg-v">${G.streak}🔥</span><span class="sg-l">רצף נוכחי</span></div>
+      <div class="sg"><span class="sg-v">${G.answeredIds.size}</span><span class="sg-l">שאלות נענו</span></div>
+      <div class="sg"><span class="sg-v">${QUESTIONS.length}</span><span class="sg-l">סה"כ שאלות</span></div>
+    </div>
+    <div class="topic-progress">
+      <div class="tp-header">ביצועים לפי נושא</div>
+      ${topicRows}
+    </div>
+    <button class="reset-btn-full" onclick="if(confirm('לאפס את כל ההתקדמות?')){localStorage.removeItem('broker1');location.reload();}">🗑️ איפוס התקדמות</button>
+  </div>`;
+}
+
+/* ════════════════════
+   HELPERS
+════════════════════ */
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function burst(color){
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  for(let i=0;i<10;i++){
+    const p=document.createElement('div');p.className='particle';
+    const sz=5+Math.random()*6;const ang=Math.random()*Math.PI*2;const d=50+Math.random()*80;
+    p.style.cssText=`width:${sz}px;height:${sz}px;background:${color};left:${cx}px;top:${cy}px;--tx:${Math.cos(ang)*d}px;--ty:${Math.sin(ang)*d}px;animation-duration:${.5+Math.random()*.4}s`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),900);
+  }
+}
+
+/* ════════════════════
+   INIT
+════════════════════ */
+loadG();renderHome();hud();
+
+// iOS install
+(function(){
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone&&!localStorage.getItem('bi')){
+    localStorage.setItem('bi','1');
+    setTimeout(()=>toast('💡 הוסף לדף הבית לשימוש אופליין!'),3000);
+  }
+})();
+</script>
+</body>
+</html>
